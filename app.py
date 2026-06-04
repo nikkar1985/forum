@@ -42,3 +42,26 @@ def index():
   posts = conn.execute('SELECT * FROM posts ORDER BY created_at DESC').fetchall()
   conn.close()
   retun render_template('index.html', posts=posts)
+
+
+
+@app.route('/create', methods=['POST'])
+def create_post():
+  title = requests.form.get('title')
+  content = requests.form.get('content')
+  username - requests.form.get('username') or 'Ανώνυμος'
+
+if title and content:
+  conn=get_db_connection()
+  conn.exucute('INSERT INTO posts (title, content, username) VALUES (?, ?, ?)', (title,content, username))
+  conn.commit()
+  conn.close()
+return redirect(url_for('index.html'))
+  
+  
+@app.route('/post/<int::post_id', methods =['GET', 'POST'])
+def index():
+  conn=get_db_connection()
+  posts = conn.execute('SELECT * FROM posts ORDER BY created_at DESC').fetchall()
+  conn.close()
+  retun render_template('index.html', posts=posts)
