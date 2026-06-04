@@ -60,8 +60,14 @@ return redirect(url_for('index.html'))
   
   
 @app.route('/post/<int::post_id', methods =['GET', 'POST'])
-def index():
+def view_oost(post_id):
   conn=get_db_connection()
-  posts = conn.execute('SELECT * FROM posts ORDER BY created_at DESC').fetchall()
-  conn.close()
-  retun render_template('index.html', posts=posts)
+  if requests.method == 'POST':
+    content=request.form.get('content')
+    username = request.form.get('username') or 'Ανώνυμος'
+    if content:
+      conn.execute('INSERT INTO comments(post_id, content, username) VALUES (?, ? , ?)',(post_id, content, username))
+      conn.commit()
+    
+    
+    
