@@ -68,6 +68,22 @@ def view_oost(post_id):
     if content:
       conn.execute('INSERT INTO comments(post_id, content, username) VALUES (?, ? , ?)',(post_id, content, username))
       conn.commit()
+
+
+  post = conn.execute('SELECT * FROM posts WHERE id = ?', (post_id,)).fetchone()
+  comments= conn.execute('SELECT * FROM comments WHERE post_id = ? ORDER BY created_at ASC',(post_id,)).fetchall()
+
+  conn.close()
+
+   if post is None:
+     return "Η ερώτηση δεν βρέθηκε", 404
+
+   return render_template('post.html', post=post, comments=comments)
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=10000)
+
     
     
     
